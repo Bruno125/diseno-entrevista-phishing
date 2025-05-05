@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Seguridad - BCP</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Prueba de Seguridad</h1>
+            <p class="subtitle">¿Puedes identificar intentos de phishing?</p>
+        </header>
+        
+        <main>
+            <div class="scenario-content-column">
+                <div id="scenario-title" class="scenario-title"></div>
+                <div id="scenario-container">
+                    <!-- Scenarios will be loaded here dynamically -->
+                </div>
+            </div>
+            
+            <div class="decision-column">
+                <div id="decision-container" class="decision-container">
+                    <p>¿Cómo deberías actuar frente a este mensaje?</p>
+                    <div class="action-buttons">
+                        <button id="report-button" class="report-button">Reportar como Phishing</button>
+                        <button id="trust-button" class="trust-button">Es Legítimo - Proceder</button>
+                    </div>
+                </div>
+                
+                <div id="feedback-container" class="hidden">
+                    <div id="feedback-message"></div>
+                    <button id="next-button" class="hidden">Siguiente</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
