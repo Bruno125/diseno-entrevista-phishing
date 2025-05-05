@@ -296,4 +296,45 @@ h1 {
     .report-button, .trust-button {
         width: 100%;
     }
+    
+    /* Force decision container to be completely hidden when needed */
+    .decision-container[style*="display: none"] {
+        display: none !important;
+    }
+    
+    /* Make feedback container take the same space as decision container */
+    #feedback-container {
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+        border-radius: 12px;
+        background-color: var(--card-background);
+        position: relative;
+        z-index: 10;
+    }
+    
+    /* Improve success/danger state appearance on mobile */
+    #feedback-container.success,
+    #feedback-container.danger,
+    #feedback-container.warning {
+        border-left: 4px solid;
+    }
+    
+    #feedback-container.success {
+        border-left-color: var(--success-color);
+    }
+    
+    #feedback-container.danger {
+        border-left-color: var(--danger-color);
+    }
+    
+    #feedback-container.warning {
+        border-left-color: var(--warning-color);
+    }
+    
+    /* Style the Next button to be more prominent on mobile */
+    #next-button {
+        width: 100%;
+        padding: 1rem;
+        margin-top: 1.5rem;
+    }
 } 

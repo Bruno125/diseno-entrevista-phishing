@@ -328,14 +328,21 @@ function loadScenario(index) {
     feedbackContainer.classList.remove('success', 'danger', 'warning');
     nextButton.classList.add('hidden');
     
+    // Reset decision container to original state
+    decisionContainer.innerHTML = `
+        <p>¿Cómo deberías actuar frente a este mensaje?</p>
+        <div class="action-buttons">
+            <button id="report-button" class="report-button">Reportar como Phishing</button>
+            <button id="trust-button" class="trust-button">Es Legítimo - Proceder</button>
+        </div>
+    `;
+    decisionContainer.classList.remove('hidden');
+    
     // Display scenario title
     titleContainer.textContent = currentScenario.title;
     
     // Load scenario content
     scenarioContainer.innerHTML = currentScenario.content;
-    
-    // Show decision container
-    decisionContainer.classList.remove('hidden');
     
     // Add event listeners for multi-step scenario
     if (currentScenario.type === 'multi-step') {
@@ -408,18 +415,38 @@ function makeDecision(decision) {
     const feedbackContainer = document.getElementById('feedback-container');
     const feedbackMessage = document.getElementById('feedback-message');
     const nextButton = document.getElementById('next-button');
+    const decisionContainer = document.getElementById('decision-container');
     
     // Determine if the decision was correct
     const isCorrectDecision = (decision === 'report' && currentScenario.isPhishing) || 
-                              (decision === 'trust' && !currentScenario.isPhishing);
+                             (decision === 'trust' && !currentScenario.isPhishing);
     
-    // Show feedback
+    // Set up feedback content
     feedbackContainer.classList.remove('hidden', 'success', 'danger', 'warning');
     feedbackContainer.classList.add(isCorrectDecision ? 'success' : 'danger');
     feedbackMessage.textContent = isCorrectDecision ? 
-                                  currentScenario.feedback.correct : 
-                                  currentScenario.feedback.incorrect;
+                                 currentScenario.feedback.correct : 
+                                 currentScenario.feedback.incorrect;
     nextButton.classList.remove('hidden');
+    
+    // For mobile devices, replace decision container content with feedback
+    if (window.innerWidth <= 991) {
+        // Clone the feedback container and replace decision container contents
+        decisionContainer.innerHTML = '';
+        decisionContainer.appendChild(feedbackContainer.cloneNode(true));
+        
+        // Hide the original feedback container
+        feedbackContainer.classList.add('hidden');
+        
+        // Add event listener to the cloned next button
+        const clonedNextButton = decisionContainer.querySelector('#next-button');
+        if (clonedNextButton) {
+            clonedNextButton.addEventListener('click', nextScenario);
+        }
+    } else {
+        // On desktop, show feedback container normally
+        feedbackContainer.classList.remove('hidden');
+    }
     
     // Mark decision as made
     decisionMade = true;
@@ -434,9 +461,14 @@ function nextScenario() {
         const titleContainer = document.getElementById('scenario-title');
         const scenarioContainer = document.getElementById('scenario-container');
         const decisionContainer = document.getElementById('decision-container');
+        const feedbackContainer = document.getElementById('feedback-container');
         const decisionColumn = document.querySelector('.decision-column');
         
-        // Hide the decision column on completion
+        // Hide any feedback containers
+        feedbackContainer.classList.add('hidden');
+        
+        // Hide the decision container/column
+        decisionContainer.classList.add('hidden');
         if (decisionColumn) {
             decisionColumn.style.display = 'none';
         }
@@ -456,8 +488,6 @@ function nextScenario() {
                 <p>El BCP nunca le solicitará información confidencial por correo electrónico, mensajes de texto o WhatsApp.</p>
             </div>
         `;
-        decisionContainer.classList.add('hidden');
-        document.getElementById('feedback-container').classList.add('hidden');
     }
 }
 
